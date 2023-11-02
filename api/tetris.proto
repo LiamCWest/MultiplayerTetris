@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+// The package name for the protocol buffer messages.
+package api;
+
+// Import the Timestamp message from the Google protobuf library.
+import "google/protobuf/timestamp.proto";
+
+// Define the Piece message, which represents a Tetris piece.
+message Piece {
+// The type of Tetris piece.
+enum Type {
+    I = 0;
+    J = 1;
+    L = 2;
+    O = 3;
+    S = 4;
+    T = 5;
+    Z = 6;
+}
+
+// The type of this piece.
+Type type = 1;
+
+// The orientation of this piece.
+int32 orientation = 2;
+
+// The x-coordinate of the leftmost cell of this piece.
+int32 x = 3;
+
+// The y-coordinate of the topmost cell of this piece.
+int32 y = 4;
+}
+
+// Define the Board message, which represents the game board.
+message Board {
+// The width of the board in cells.
+int32 width = 1;
+
+// The height of the board in cells.
+int32 height = 2;
+
+// The cells of the board, in row-major order.
+repeated bool cells = 3;
+}
+
+// Define the GameState message, which represents the current state of the game.
+message GameState {
+// The ID of the game.
+string game_id = 1;
+
+// The current state of the board.
+Board board = 2;
+
+// The current piece being controlled by the player.
+Piece current_piece = 3;
+
+// The next piece that will appear.
+Piece next_piece = 4;
+
+// The score of the player.
+int32 score = 5;
+
+// The number of lines cleared by the player.
+int32 lines_cleared = 6;
+
+// The timestamp of the last update to the game state.
+google.protobuf.Timestamp last_update_time = 7;
+}
+
+// Define the ConnectRequest message, which is sent by a client to connect to the game server.
+message ConnectRequest {
+// The name of the player.
+string player_name = 1;
+}
+
+// Define the ConnectResponse message, which is sent by the server in response to a ConnectRequest.
+message ConnectResponse {
+// The ID of the player.
+string player_id = 1;
+}
+
+// Define the DisconnectRequest message, which is sent by a client to disconnect from the game server.
+message DisconnectRequest {
+// The ID of the player.
+string player_id = 1;
+}
+
+// Define the DisconnectResponse message, which is sent by the server in response to a DisconnectRequest.
+message DisconnectResponse {}
+
+// Define the CreateGameRequest message, which is sent by a client to create a new game.
+message CreateGameRequest {
+    // The ID of the player creating the game.
+    string player_id = 1;
+}
+
+// Define the CreateGameResponse message, which is sent by the server in response to a CreateGameRequest.
+message CreateGameResponse {
+    // The ID of the game.
+    string game_id = 1;
+}
+
+// Define the JoinGameRequest message, which is sent by a client to join an existing game.
+message JoinGameRequest {
+    // The ID of the player joining the game.
+    string player_id = 1;
+
+    // The ID of the game to join.
+    string game_id = 2;
+}
+
+// Define the JoinGameResponse message, which is sent by the server in response to a JoinGameRequest.
+message JoinGameResponse {
+    // The current state of the game.
+    GameState game_state = 1;
+}
+
+// Define the MovePieceRequest message, which is sent by a client to move the current piece.
+message MovePieceRequest {
+    // The ID of the player.
+    string player_id = 1;
+
+    // The direction to move the piece.
+    enum Direction {
+        LEFT = 0;
+        RIGHT = 1;
+        DOWN = 2;
+        ROTATE_CLOCKWISE = 3;
+        ROTATE_COUNTERCLOCKWISE = 4;
+    }
+    Direction direction = 2;
+}
+
+// Define the MovePieceResponse message, which is sent by the server in response to a MovePieceRequest.
+message MovePieceResponse {
+    // The current state of the game.
+    GameState game_state = 1;
+}
+
+message Empty {}
+
+// Define the TetrisService service, which provides methods for connecting to the game server, disconnecting from the game server, creating a new game, joining an existing game, and moving the current piece.
+service TetrisService {
+    // Connect to the game server.
+    rpc Connect(ConnectRequest) returns (ConnectResponse) {}
+
+    // Disconnect from the game server.
+    rpc Disconnect(DisconnectRequest) returns (DisconnectResponse) {}
+
+    // Create a new game.
+    rpc CreateGame(CreateGameRequest) returns (CreateGameResponse) {}
+
+    // Join an existing game.
+    rpc JoinGame(JoinGameRequest) returns (JoinGameResponse) {}
+
+    // Move the current piece.
+    rpc MovePiece(MovePieceRequest) returns (MovePieceResponse) {}
+
+    // Define the UpdateGameState method, which is used by the server to update the game state and send the updated game state to all players in the game.
+    rpc UpdateGameState(GameState) returns (Empty) {}
+}
