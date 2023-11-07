@@ -10,8 +10,8 @@ class BagBoard(Board):
         self.backBag = self.fillBag()
         Board.__init__(self,screen, [6, 16])
         self.pieceBag = [Piece(self, shape, Vector2(1, 4*i)) for i, shape in enumerate(self.bag[:4])]
-        self.xoffset = (self.screen.gui.width // 4*3) - (self.size[0] * 20 //2) + 20
-        self.yoffset = (self.screen.gui.height // 2) - (self.size[1] * 20 // 2)
+        self.xoffset = (self.screen.gui.width // 4*3) - (self.size[0] * self.blockSize //2) + self.blockSize
+        self.yoffset = (self.screen.gui.height // 2) - (self.size[1] * self.blockSize // 2)
         for piece in self.pieceBag: piece.addToBoard()
                 
     def fillBag(self):

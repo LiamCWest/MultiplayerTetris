@@ -14,17 +14,18 @@ pieceColors = {
 }
 
 class Board:
-    def __init__(self, screen, size):
+    def __init__(self, screen, size, blockSize = 20):
         self.screen = screen
         self.size = size
+        self.blockSize = blockSize
         self.board = [[Block(Vector2(x,y)) for x in range(size[0])] for y in range(size[1])]
-        self.xoffset = (self.screen.gui.width // 2) - (self.size[0] * 20 // 2)
-        self.yoffset = (self.screen.gui.height) - (self.size[1] * 20)
+        self.xoffset = (self.screen.gui.width // 2) - (self.size[0] * self.blockSize // 2)
+        self.yoffset = (self.screen.gui.height) - (self.size[1] * self.blockSize)
         
     def draw(self):
         for row in self.board:
             for b in row:
-                pygame.draw.rect(self.screen.gui.screen, b.color, ((b.pos.x * 20) + self.xoffset, (b.pos.y * 20) + self.yoffset, 20, 20))
+                pygame.draw.rect(self.screen.gui.screen, b.color, ((b.pos.x * self.blockSize) + self.xoffset, (b.pos.y * self.blockSize) + self.yoffset, self.blockSize, self.blockSize))
         
 class Block:
     def __init__(self, pos, color = (100, 100, 100)):
