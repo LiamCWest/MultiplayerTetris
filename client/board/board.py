@@ -2,6 +2,7 @@ import pygame
 
 from utils.vector2 import Vector2
 from piece.piece import Piece
+from piece.ghostPiece import GhostPiece
 
 pieceColors = {
     "O": (255, 255, 0),
@@ -10,7 +11,8 @@ pieceColors = {
     "J": (0, 0, 255),
     "Z": (255, 0, 0),
     "S": (0, 255, 0),
-    "T": (128, 0, 128)
+    "T": (128, 0, 128,),
+    "G": (200, 200, 200)
 }
 
 class Board:
@@ -40,6 +42,6 @@ class Block:
         self.occupied = occupied
         self.piecePart = piecePart
         if (piecePart != None):
-            self.color = pieceColors[piecePart.piece.shape]
+            self.color = pieceColors[piecePart.piece.shape if type(piecePart.piece) != GhostPiece else "G"]
         if(not occupied):
             self.color = (100, 100, 100)
