@@ -52,6 +52,7 @@ class GameScreen(Screen):
         self.next()
         
     def next(self, piece = None):
+        if(self.selectedPiece != None): self.board.piecesOnBoard.append(self.selectedPiece)
         self.selectedPiece = self.bagBoard.nextPiece(self.board) if piece == None else piece
         self.selectedPiece.pos = Vector2(2,0)
         self.selectedPiece.addToBoard()

@@ -8,24 +8,17 @@ class GhostPiece(Piece):
         self.piece = piece
         self.update()
         
-    def lowestPos(self):
-        lowest = Vector2(0,0)
-        for part in self.parts:
-            if(part.relPos.y > lowest.y): lowest = part.relPos
-        return lowest
-        
     def checkBelow(self, selfPos):
-        # lowest = self.lowestPos()
         for part in self.parts:
             part.setRelPos(self.piece.rotation)
             y = part.relPos.y + selfPos.y
             x = part.relPos.x + selfPos.x
             if(y >= self.board.size[1] - 1): 
                 return False
-            if((self.board.board[y][x].occupied) 
-            and (self.board.board[y][x].piecePart.piece != self.piece
-            and self.board.board[y][x].piecePart.piece != self)): 
-            # if((self.board.board[y][x].occupied) and self.board.board[y][x].piecePart.piece.placed):
+            # if((self.board.board[y][x].occupied) 
+            # and (self.board.board[y][x].piecePart.piece != self.piece
+            # and self.board.board[y][x].piecePart.piece != self)): 
+            if((self.board.board[y][x].occupied) and self.board.board[y][x].piecePart.piece.placed):
                 return False
         return True
     

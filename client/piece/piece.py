@@ -56,19 +56,7 @@ class Piece:
         while(True):
             hit = self.move(Vector2(0,1))
             if(hit == "hit"): break
-        # self.board.checkLines()
-    
-    # def checkBelow(self):
-    #     lowest = self.lowestPos()
-    #     y = lowest.y + self.pos.y
-    #     x = lowest.x + self.pos.x
-    #     print(y)
-    #     if(y >= self.board.size[1] - 1): 
-    #         return False
-    #     if((self.board.board[y][x].occupied) 
-    #     and self.board.board[y][x].piecePart.piece != self): 
-    #         return False
-    #     return True
+        self.board.checkLines()
         
 class PiecePart():
     def __init__(self, piece : Piece, pos : Vector2, num):
